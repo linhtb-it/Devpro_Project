@@ -1,0 +1,171 @@
+package com.example.watchnow_project.Main;
+
+import android.net.ConnectivityManager;
+import android.os.Bundle;
+
+import com.example.watchnow_project.GetString.Links;
+import com.example.watchnow_project.Model.Entity.Category;
+import com.example.watchnow_project.Model.Entity.Video;
+import com.example.watchnow_project.R;
+import com.example.watchnow_project.TransData.ICategoryTrans;
+import com.example.watchnow_project.TransData.IVideoTrans;
+import com.example.watchnow_project.View.CategoryFragment;
+import com.example.watchnow_project.View.HotVideoFragment;
+import com.example.watchnow_project.View.NoInternetFragment;
+import com.example.watchnow_project.View.VideoPlayerFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.GravityCompat;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+
+import android.view.MenuItem;
+
+import com.google.android.material.navigation.NavigationView;
+
+import androidx.drawerlayout.widget.DrawerLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, IVideoTrans, ICategoryTrans {
+
+    private static final String TAG = "MainActivity";
+    Fragment hotVideoFragMent;
+    Fragment categoryFragMent;
+    Fragment noInternetFragment;
+    VideoPlayerFragment videoPlayer;
+    ProgressBar progressBar;
+    Toolbar toolbar;
+    ActionBarDrawerToggle toggle;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        progressBar = findViewById(R.id.progres);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
+
+        BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        if(isConnected()){
+            hotVideoFragMent = HotVideoFragment.newInstance(Links.GET_HOT_VIDEO);
+            getFragment(hotVideoFragMent);
+        }else {
+            noInternetFragment = NoInternetFragment.newInstance();
+            getFragment(noInternetFragment);
+        }
+    }
+
+    public  Boolean isConnected(){
+       ConnectivityManager cm = (ConnectivityManager) getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_hotVideo) {
+            // Handle the camera action
+        } else if (id == R.id.nav_history) {
+
+        } else if (id == R.id.nav_tools) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
+
+        }
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+            = new BottomNavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.navigation_hotVideo:
+                    getFragment(HotVideoFragment.newInstance(Links.GET_HOT_VIDEO));
+                    return true;
+                case R.id.navigation_category:
+                    getFragment(CategoryFragment.newInstance());
+                    return true;
+                case R.id.navigation_favorite:
+                    //getFragment(Favorite_Fragment.newInstance());
+                    return true;
+            }
+            return false;
+        }
+    };
+    public void getFragment(Fragment fragment){
+        try {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container,fragment)
+                    .commit();
+            progressBar.setVisibility(View.GONE);
+        }catch (Exception e){
+            e.printStackTrace();
+            Toast.makeText(getBaseContext(),"Error",Toast.LENGTH_LONG).show();
+            Log.d(TAG, "getFragment: "+e.getMessage());
+        }
+    }
+
+    @Override
+    public void sendVideo(ArrayList<Video> videos,int position) {
+        videoPlayer = VideoPlayerFragment.newInstance();
+        if(hotVideoFragMent !=null || hotVideoFragMent.isInLayout()){
+            videoPlayer.getVideo(videos,position);
+        }
+        getFragment(videoPlayer);
+
+    }
+
+    @Override
+    public void receiveVideo(boolean x) {
+
+    }
+
+    @Override
+    public void sendString(String x) {
+
+    }
+
+    @Override
+    public void sendCategory(Category category, String linkCategory) {
+        this.toolbar.setTitle(category.getTitle());
+        hotVideoFragMent = HotVideoFragment.newInstance(linkCategory);
+        getFragment(hotVideoFragMent);
+    }
+}

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_5sdp"
+    android:background="@color/colorIconBackground"
+    android:layout_marginBottom="@dimen/_10sdp">
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="1.5"
+        android:layout_height="@dimen/_80sdp">
+        <ImageView
+            android:id="@+id/img_Avatar_Video_Near"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ic_play_circle_outline_black_40dp"/>
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="@dimen/_80sdp"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:paddingLeft="@dimen/_5sdp">
+        <TextView
+            android:id="@+id/tv_Title_Video_Near"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_65sdp"
+            android:lines="3"
+            android:textStyle="bold"
+            android:paddingTop="@dimen/_15sdp"
+            android:textSize="@dimen/_10sdp"/>
+        <TextView
+            android:id="@+id/tv_TimeCreate_Video_near"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_15sdp"
+            android:textSize="@dimen/_8sdp"
+            />
+    </LinearLayout>
+</LinearLayout>
