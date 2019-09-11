@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -36,7 +37,7 @@ public class VideoPlayerFragment extends Fragment {
     TextView tv_Title_PlayVideo, tv_TimePlay, tv_TimeMax;
     SeekBar seekBar;
     boolean statusControl, videoNext =  true;
-    //ProgressBar progressBar;
+    ProgressBar progressBar;
     RecyclerView rv_Video_Near;
 
     ArrayList<Video> videos;
@@ -72,6 +73,7 @@ public class VideoPlayerFragment extends Fragment {
         seekBar = view.findViewById(R.id.seek_Video);
         tv_TimePlay = view.findViewById(R.id.tv_TimePlay);
         tv_TimeMax = view.findViewById(R.id.tv_TimeMax);
+        progressBar = view.findViewById(R.id.progres_loadVideo);
         hideControl();
 
         imgBut_Play.setOnClickListener(new View.OnClickListener() {
@@ -261,6 +263,7 @@ public class VideoPlayerFragment extends Fragment {
         }
         Uri uri = Uri.parse(videos.get(position).getFile_Mp4());
         vv_Video.setVideoURI(uri);
+        progressBar.setVisibility(View.GONE);
         setVideoToList(this.videos, position);
 
         vv_Video.start();

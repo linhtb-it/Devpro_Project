@@ -47,7 +47,7 @@ public class HotVideo_Adapter extends RecyclerView.Adapter<HotVideo_Adapter.View
         holder.tv_Time.setText("00:00");
         holder.tv_Title.setText(videosList.get(position).getTitle());
         holder.tv_TimeCreate.setText("Date create: " + videosList.get(position).getDate_Created());
-        Glide.with(context).load(videosList.get(position).getAvatar()).into(holder.img_Avatar_Mini);
+        //Glide.with(context).load(videosList.get(position).getAvatar()).into(holder.img_Avatar_Mini);
         holder.img_Avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

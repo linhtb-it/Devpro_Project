@@ -17,9 +17,10 @@
 
         <ImageView
             android:id="@+id/img_Avatar"
-            android:scaleType="fitXY"
+            android:scaleType="center"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_180sdp" />
+            android:layout_height="@dimen/_180sdp"
+            android:background="@drawable/ic_ondemand_video_black_24dp"/>
 
         <TextView
             android:id="@+id/tv_Time"
@@ -43,13 +44,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/img_Avartar_Mini"
-                android:scaleType="fitXY"
+            <RelativeLayout
                 android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp"
-                android:background="@drawable/border_radius_30dp"/>
+                android:layout_height="@dimen/_50sdp">
+                <ImageView
+                    android:id="@+id/img_Avartar_Mini"
+                    android:scaleType="fitXY"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:src="@drawable/ic_image_black_50dp"
+                    />
+            </RelativeLayout>
+
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_weight="8"

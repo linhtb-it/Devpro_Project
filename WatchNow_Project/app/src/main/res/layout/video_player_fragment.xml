@@ -95,7 +95,17 @@
                     android:layout_height="@dimen/_20sdp"
                     android:layout_alignParentRight="true"
                     android:src="@drawable/ic_skip_next_black_40dp" />
-            </RelativeLayout>
+            </RelativeLayout><RelativeLayout
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+            <ProgressBar
+                android:id="@+id/progres_loadVideo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </RelativeLayout>
+
         </RelativeLayout>
 
         <LinearLayout
