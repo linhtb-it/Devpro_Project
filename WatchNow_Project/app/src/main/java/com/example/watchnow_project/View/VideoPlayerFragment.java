@@ -290,7 +290,7 @@ public class VideoPlayerFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                tv_TimeMax.setText(formatTime.format(vv_Video.getDuration()));
+                //tv_TimeMax.setText(formatTime.format(vv_Video.getDuration()));
                 //seekBar.setMax(vv_Video.getDuration());
                 setTimeVideo();
                 //progressBar.setVisibility(View.GONE);
