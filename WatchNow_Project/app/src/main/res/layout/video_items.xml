@@ -2,25 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:layout_marginBottom="@dimen/_10sdp"
-    android:background="@color/colorIconBackground">
+    android:background="@color/colorBlack"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/_180sdp"
-        android:layout_marginBottom="@dimen/_5sdp"
-        android:layout_marginRight="@dimen/_5sdp"
         android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_marginRight="@dimen/_5sdp"
+        android:layout_marginBottom="@dimen/_5sdp"
 
         android:background="@color/colorAppBar">
 
         <ImageView
             android:id="@+id/img_Avatar"
-            android:scaleType="center"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_180sdp"
-            android:background="@drawable/ic_ondemand_video_black_24dp"/>
+            android:background="@drawable/ic_ondemand_video_black_24dp"
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/tv_Time"
@@ -30,53 +30,78 @@
             android:layout_alignParentBottom="true"
             android:layout_marginRight="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_5sdp"
+            android:padding="0dp"
             android:textColor="@color/colorText"
-            android:textSize="@dimen/_10sdp"
-            android:padding="0dp" />
+            android:textSize="@dimen/_10sdp" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp"
+        android:layout_height="@dimen/_50sdp"
         android:paddingLeft="@dimen/_10sdp"
         android:paddingRight="@dimen/_5sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <RelativeLayout
                 android:layout_width="@dimen/_50sdp"
-                android:layout_height="@dimen/_50sdp">
+                android:layout_height="match_parent">
+
                 <ImageView
                     android:id="@+id/img_Avartar_Mini"
+                    android:layout_width="@dimen/_35sdp"
+                    android:layout_height="@dimen/_35sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/_5sdp"
                     android:scaleType="fitXY"
-                    android:layout_width="@dimen/_50sdp"
-                    android:layout_height="@dimen/_50sdp"
-                    android:src="@drawable/ic_image_black_50dp"
-                    />
+                    android:src="@drawable/ic_image_black_50dp" />
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_weight="8"
                 android:layout_height="match_parent"
-                android:paddingLeft="@dimen/_10sdp"
-                android:orientation="vertical">
-                <TextView
-                    android:paddingTop="@dimen/_5sdp"
-                    android:id="@+id/tv_Title"
-                    android:maxLines="2"
-                    android:textStyle="bold"
+                android:layout_weight="8"
+                android:orientation="vertical"
+                android:background="@color/colorCategoryName">
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:textSize="@dimen/_12sdp"
-                    android:layout_height="@dimen/_45sdp" />
-                <TextView
-                    android:id="@+id/tv_TimeCreate"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_15sdp"
-                    android:textSize="@dimen/_10sdp"
-                    android:paddingRight="@dimen/_5sdp"
-                    android:textAlignment="viewEnd"/>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="@dimen/_1sdp"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:background="@color/colorBlack">
+                    <TextView
+                        android:id="@+id/tv_Title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:paddingTop="@dimen/_5sdp"
+                        android:textSize="@dimen/_12sdp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_TimeCreate"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_15sdp"
+                        android:paddingRight="@dimen/_5sdp"
+                        android:textSize="@dimen/_10sdp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_favorite_black_40dp" />
             </LinearLayout>
 
         </LinearLayout>

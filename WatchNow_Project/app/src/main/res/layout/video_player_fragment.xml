@@ -23,7 +23,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_10sdp"
                 android:layout_alignParentBottom="true"
-
                 android:layout_marginBottom="@dimen/_10sdp">
 
                 <TextView
@@ -39,9 +38,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="@dimen/_30sdp"
-                    android:layout_marginRight="@dimen/_30sdp" />
+
+                    android:layout_marginLeft="@dimen/_15sdp"
+                    android:layout_marginRight="@dimen/_50sdp" />
                 <TextView
                     android:id="@+id/tv_TimeMax"
                     android:layout_width="wrap_content"
@@ -50,8 +49,22 @@
                     android:text="00:00"
                     android:textSize="@dimen/_7sdp"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/_5sdp"/>
+                    android:layout_marginRight="@dimen/_25sdp"/>
 
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:layout_marginRight="@dimen/_5sdp">
+                <ImageView
+                    android:id="@+id/img_FullScreen"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_fullscreen_black_24dp"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/control"
@@ -59,8 +72,8 @@
                 android:layout_height="@dimen/_20sdp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/_50sdp"
-                android:layout_marginRight="@dimen/_50sdp">
+                android:layout_marginLeft="@dimen/_80sdp"
+                android:layout_marginRight="@dimen/_80sdp">
 
                 <ImageView
                     android:id="@+id/play_ctr"

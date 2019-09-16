@@ -1,12 +1,15 @@
 package com.example.watchnow_project.View;
 
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 
 import android.os.Handler;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -28,6 +31,7 @@ import com.example.watchnow_project.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class VideoPlayerFragment extends Fragment {
 
@@ -39,11 +43,13 @@ public class VideoPlayerFragment extends Fragment {
     boolean statusControl, videoNext =  true;
     ProgressBar progressBar;
     RecyclerView rv_Video_Near;
+    ImageView imgFullScreen;
 
     ArrayList<Video> videos;
 
     SimpleDateFormat formatTime = new SimpleDateFormat("mm:ss");
-
+    int i = 0;
+    float xTouch, yTouch;
 
     int position;
     public void getVideo(ArrayList videos, int position){
@@ -73,7 +79,9 @@ public class VideoPlayerFragment extends Fragment {
         seekBar = view.findViewById(R.id.seek_Video);
         tv_TimePlay = view.findViewById(R.id.tv_TimePlay);
         tv_TimeMax = view.findViewById(R.id.tv_TimeMax);
+        imgFullScreen = view.findViewById(R.id.img_FullScreen);
         progressBar = view.findViewById(R.id.progres_loadVideo);
+        progressBar.setVisibility(View.VISIBLE);
         hideControl();
 
         imgBut_Play.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +108,54 @@ public class VideoPlayerFragment extends Fragment {
                 pauseControl();
             }
         });
+        vv_Video.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
 
+        vv_Video.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+//
+                if (motionEvent.getAction() ==MotionEvent.ACTION_MOVE){
+                    if(motionEvent.getX()>=xTouch){
+                        i++;
+                    }
+                    else {
+                        i--;
+                    }
+                    tv_Title_PlayVideo.setText("Start Hover"+ i);
+                }
+                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                    //showControl();
+                    xTouch = motionEvent.getX();
+                    tv_Title_PlayVideo.setText("Finish"+ motionEvent.getX());
+                    i=0 ;
+                }if (motionEvent.getAction() == MotionEvent.ACTION_UP){
+                    if (i>5){
+                        if(vv_Video.getDuration() -vv_Video.getCurrentPosition()>10000){
+                            vv_Video.seekTo(vv_Video.getCurrentPosition() + 10000);
+                        }else {
+                            vv_Video.seekTo( vv_Video.getDuration() - 1000);
+                        }
+
+                    }else if(i<-5){
+                        if(vv_Video.getCurrentPosition() <= 10000){
+                            vv_Video.seekTo(100);
+                        }else {
+                            vv_Video.seekTo(vv_Video.getCurrentPosition() - 10000);
+                        }
+
+                    }
+
+                    tv_Title_PlayVideo.setText("Stop touch"+ vv_Video.getWidth()+"--"+vv_Video.getHeight());
+                }
+                return false;
+            }
+        });
         vv_Video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,10 +163,16 @@ public class VideoPlayerFragment extends Fragment {
                     hideControl();
                 }else {
                     showControl();
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            hideControl();
+                        }
+                    },1500);
                 }
             }
         });
-
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -144,6 +205,7 @@ public class VideoPlayerFragment extends Fragment {
         tv_TimePlay.setVisibility(View.GONE);
         tv_TimeMax.setVisibility(View.GONE);
         seekBar.setVisibility(View.GONE);
+        imgFullScreen.setVisibility(View.GONE);
         statusControl = false;
     }
     private void showControl(){
@@ -152,6 +214,7 @@ public class VideoPlayerFragment extends Fragment {
         seekBar.setVisibility(View.VISIBLE);
         tv_TimePlay.setVisibility(View.VISIBLE);
         tv_TimeMax.setVisibility(View.VISIBLE);
+        imgFullScreen.setVisibility(View.VISIBLE);
 
         if(vv_Video.isPlaying()){
             imgBut_Pause.setVisibility(View.VISIBLE);
@@ -166,7 +229,11 @@ public class VideoPlayerFragment extends Fragment {
 
     // play control click event - play video
     private void playControl_Click(){
-        vv_Video.start();
+        try{
+            vv_Video.resume();
+        }catch (Exception ex){
+            vv_Video.start();
+        }
         statusControl = true;
         showControl();
     }
@@ -180,6 +247,8 @@ public class VideoPlayerFragment extends Fragment {
 
     //next control click event - run video next on List
     private void nextControl(){
+        vv_Video.suspend();
+        progressBar.setVisibility(View.VISIBLE);
         if(position<videos.size()){
             position++;
             PlayVideo(this.videos, position);
@@ -191,6 +260,7 @@ public class VideoPlayerFragment extends Fragment {
     }
     // back control click event - run video before on List
     private void backControl(){
+        progressBar.setVisibility(View.VISIBLE);
         if(position>0){
             position--;
             PlayVideo(this.videos, position);
@@ -203,9 +273,6 @@ public class VideoPlayerFragment extends Fragment {
 
     // set time to textView Right of seekBar - length of video
     private void setTv_TimeMax(){
-//        SimpleDateFormat formatTime = new SimpleDateFormat("mm:ss");
-//        tv_TimeMax.setText(formatTime.format(vv_Video.getDuration()));
-
         seekBar.setMax(vv_Video.getDuration());
     }
 
@@ -224,8 +291,9 @@ public class VideoPlayerFragment extends Fragment {
             @Override
             public void run() {
                 tv_TimeMax.setText(formatTime.format(vv_Video.getDuration()));
-                seekBar.setMax(vv_Video.getDuration());
+                //seekBar.setMax(vv_Video.getDuration());
                 setTimeVideo();
+                //progressBar.setVisibility(View.GONE);
                 handler.postDelayed(this,500);
             }
         }, 100);
@@ -233,19 +301,26 @@ public class VideoPlayerFragment extends Fragment {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 if(videoNext){
+                    progressBar.setVisibility(View.VISIBLE);
                     nextControl();
                 }else
                     showControl();
             }
         });
     }
+    private float getDurationVideo(Video video){
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(video.getFile_Mp4(),new HashMap<String, String>());
+        String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        //SimpleDateFormat formatTime = new SimpleDateFormat("mm:ss");
+        //formatTime.format(Float.parseFloat(time));
+        retriever.release();
+        return  Float.parseFloat(time);
+    }
     private void setVideoToList(ArrayList<Video> videos, int position){
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
-        ArrayList<Video> videosTemp = new ArrayList();
-        videosTemp = videos;
-        videosTemp.remove(position);
-        VideoNear_Adapter adapter = new VideoNear_Adapter(getContext(),videosTemp);
+        VideoNear_Adapter adapter = new VideoNear_Adapter(getContext(),videos);
 
         rv_Video_Near.setLayoutManager(layoutManager);
         rv_Video_Near.setAdapter(adapter);
@@ -259,14 +334,14 @@ public class VideoPlayerFragment extends Fragment {
 
         }catch (Exception ex){
             ex.printStackTrace();
-//            img_Avatar_PlayVideo.setBackground(getResources().getDrawable(R.drawable.ic_pause_circle_outline_black_40dp));
         }
         Uri uri = Uri.parse(videos.get(position).getFile_Mp4());
         vv_Video.setVideoURI(uri);
-        progressBar.setVisibility(View.GONE);
         setVideoToList(this.videos, position);
-
         vv_Video.start();
+        float timeMax = getDurationVideo(videos.get(position));
+        tv_TimeMax.setText(formatTime.format(timeMax));
+        seekBar.setMax((int)timeMax);
         videoUpdate();
 
     }

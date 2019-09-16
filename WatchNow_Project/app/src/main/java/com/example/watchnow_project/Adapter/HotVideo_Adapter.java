@@ -1,6 +1,8 @@
 package com.example.watchnow_project.Adapter;
 
 import android.content.Context;
+import android.media.MediaMetadata;
+import android.media.MediaMetadataRetriever;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,9 @@ import com.example.watchnow_project.Model.Entity.Video;
 import com.example.watchnow_project.R;
 import com.example.watchnow_project.Event.ISetOnVideoItemClick;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class HotVideo_Adapter extends RecyclerView.Adapter<HotVideo_Adapter.ViewHolder> {
     Context context;
@@ -44,7 +48,17 @@ public class HotVideo_Adapter extends RecyclerView.Adapter<HotVideo_Adapter.View
     @Override
     public void onBindViewHolder(@NonNull HotVideo_Adapter.ViewHolder holder, int position) {
         Glide.with(context).load(videosList.get(position).getAvatar()).into(holder.img_Avatar);
+
+//        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+//        retriever.setDataSource(videosList.get(position).getFile_Mp4(),new HashMap<String,String>());
+//        String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+//        SimpleDateFormat formatTime = new SimpleDateFormat("mm:ss");
+//        formatTime.format(Float.parseFloat(time));
+//        retriever.release();
+//
+//        holder.tv_Time.setText(formatTime.format(Float.parseFloat(time))+"");
         holder.tv_Time.setText("00:00");
+
         holder.tv_Title.setText(videosList.get(position).getTitle());
         holder.tv_TimeCreate.setText("Date create: " + videosList.get(position).getDate_Created());
         //Glide.with(context).load(videosList.get(position).getAvatar()).into(holder.img_Avatar_Mini);
