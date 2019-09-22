@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.watchnow_project.Adapter.HotVideo_Adapter;
-import com.example.watchnow_project.Main.MainActivity;
 import com.example.watchnow_project.Model.Entity.Video;
 import com.example.watchnow_project.R;
 import com.example.watchnow_project.Event.ISetOnVideoItemClick;

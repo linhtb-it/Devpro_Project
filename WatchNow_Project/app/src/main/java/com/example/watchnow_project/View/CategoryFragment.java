@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.watchnow_project.Adapter.Category_Adapter;
 import com.example.watchnow_project.GetString.Links;
-import com.example.watchnow_project.Main.MainActivity;
 import com.example.watchnow_project.Model.Entity.Category;
 import com.example.watchnow_project.Model.Entity.Video;
 import com.example.watchnow_project.R;

@@ -1,4 +1,4 @@
-package com.example.watchnow_project.Main;
+package com.example.watchnow_project.View;
 
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_hotVideo) {
             HotVideoFragment hotVideoFragment;
-            hotVideoFragment = HotVideoFragment.newInstance();
+            hotVideoFragment = HotVideoFragment.newInstance(Links.GET_HOT_VIDEO);
             getFragment(hotVideoFragment);
         } else if (id == R.id.nav_history) {
 
