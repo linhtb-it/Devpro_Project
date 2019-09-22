@@ -1,7 +1,6 @@
 package com.example.watchnow_project.Adapter;
 
 import android.content.Context;
-import android.media.MediaMetadata;
 import android.media.MediaMetadataRetriever;
 import android.view.LayoutInflater;
 import android.view.View;

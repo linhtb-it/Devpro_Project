@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import android.os.Handler;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 
 import android.view.MotionEvent;
@@ -119,7 +118,6 @@ public class VideoPlayerFragment extends Fragment {
 
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-//
                 if (motionEvent.getAction() ==MotionEvent.ACTION_MOVE){
                     if(motionEvent.getX()>=xTouch){
                         i++;
@@ -189,9 +187,6 @@ public class VideoPlayerFragment extends Fragment {
                 vv_Video.seekTo(seekBar.getProgress());
             }
         });
-        //progressBar = view.findViewById(R.id.progres_videoPlayer_Loadding);
-
-        //progressBar.setVisibility(view.GONE);
 
         PlayVideo(videos, position);
         return view;
@@ -290,10 +285,7 @@ public class VideoPlayerFragment extends Fragment {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                //tv_TimeMax.setText(formatTime.format(vv_Video.getDuration()));
-                //seekBar.setMax(vv_Video.getDuration());
                 setTimeVideo();
-                //progressBar.setVisibility(View.GONE);
                 handler.postDelayed(this,500);
             }
         }, 100);
@@ -312,8 +304,6 @@ public class VideoPlayerFragment extends Fragment {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         retriever.setDataSource(video.getFile_Mp4(),new HashMap<String, String>());
         String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-        //SimpleDateFormat formatTime = new SimpleDateFormat("mm:ss");
-        //formatTime.format(Float.parseFloat(time));
         retriever.release();
         return  Float.parseFloat(time);
     }

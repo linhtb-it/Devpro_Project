@@ -118,9 +118,11 @@ public class MainActivity extends AppCompatActivity
             switch (item.getItemId()) {
                 case R.id.navigation_hotVideo:
                     getFragment(HotVideoFragment.newInstance(Links.GET_HOT_VIDEO));
+                    toolbar.setTitle(R.string.title_hotVideo);
                     return true;
                 case R.id.navigation_category:
                     getFragment(CategoryFragment.newInstance());
+                    toolbar.setTitle(R.string.title_dashboard);
                     return true;
                 case R.id.navigation_favorite:
                     //getFragment(Favorite_Fragment.newInstance());
