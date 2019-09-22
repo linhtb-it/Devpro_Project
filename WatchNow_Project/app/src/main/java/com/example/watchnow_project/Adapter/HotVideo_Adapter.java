@@ -60,7 +60,7 @@ public class HotVideo_Adapter extends RecyclerView.Adapter<HotVideo_Adapter.View
         holder.tv_Time.setText("00:00");
 
         holder.tv_Title.setText(videosList.get(position).getTitle());
-        holder.tv_TimeCreate.setText("Date create: " + videosList.get(position).getDate_Created());
+        holder.tv_TimeCreate.setText( SplitDateString.getDate(videosList.get(position).getDate_Created()));
         //Glide.with(context).load(videosList.get(position).getAvatar()).into(holder.img_Avatar_Mini);
         holder.img_Avatar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,9 +73,8 @@ public class HotVideo_Adapter extends RecyclerView.Adapter<HotVideo_Adapter.View
                     }
                 }
                 catch (Exception ex){
-                    Toast.makeText(context,"Error",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,R.string.error,Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
         holder.tv_Title.setOnClickListener(new View.OnClickListener() {

@@ -104,7 +104,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_hotVideo) {
-            // Handle the camera action
+            HotVideoFragment hotVideoFragment;
+            hotVideoFragment = HotVideoFragment.newInstance();
+            getFragment(hotVideoFragment);
         } else if (id == R.id.nav_history) {
 
         } else if (id == R.id.nav_tools) {

@@ -46,7 +46,7 @@ public class VideoNear_Adapter extends RecyclerView.Adapter<VideoNear_Adapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Glide.with(context).load(videosList.get(position).getAvatar()).into(holder.img_Avatar_Video_Near);
         holder.tv_Title_Video_Near.setText(videosList.get(position).getTitle());
-        holder.tv_TimeCreate_Video_near.setText(videosList.get(position).getDate_Created());
+        holder.tv_TimeCreate_Video_near.setText(SplitDateString.getDate(videosList.get(position).getDate_Created()));
 
         holder.img_Avatar_Video_Near.setOnClickListener(new View.OnClickListener() {
             @Override

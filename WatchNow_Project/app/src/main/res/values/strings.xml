@@ -22,5 +22,5 @@
     <string name="no_Wifi">Bạn đang không dùng Wifi, chạy mạng di động</string>
     <string name="error">Lỗi</string>
 
-    <string name="title_date_create">Ngày phát hành: </string>
+    <string name="title_date_create">Date  </string>
 </resources>
