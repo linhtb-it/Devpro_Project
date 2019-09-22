@@ -3,6 +3,7 @@ package com.example.watchnow_project.Main;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
+import com.example.watchnow_project.Adapter.InternetConnection;
 import com.example.watchnow_project.GetString.Links;
 import com.example.watchnow_project.Model.Entity.Category;
 import com.example.watchnow_project.Model.Entity.Video;
@@ -30,6 +31,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.View;
 import android.widget.ProgressBar;
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity
     Fragment hotVideoFragMent;
     Fragment categoryFragMent;
     Fragment noInternetFragment;
+    FragmentManager fragmentManager;
     VideoPlayerFragment videoPlayer;
     ProgressBar progressBar;
     Toolbar toolbar;
@@ -56,6 +60,10 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
+        fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
         progressBar = findViewById(R.id.progres);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -65,7 +73,7 @@ public class MainActivity extends AppCompatActivity
 
         BottomNavigationView navView = findViewById(R.id.bottom_nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        if(isConnected()){
+        if(InternetConnection.ConnectionForInternet(this)){
             hotVideoFragMent = HotVideoFragment.newInstance(Links.GET_HOT_VIDEO);
             getFragment(hotVideoFragMent);
         }else {
@@ -74,10 +82,10 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public  Boolean isConnected(){
-       ConnectivityManager cm = (ConnectivityManager) getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
-    }
+//    public  Boolean isConnected(){
+//       ConnectivityManager cm = (ConnectivityManager) getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
+//        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+//    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -117,6 +125,7 @@ public class MainActivity extends AppCompatActivity
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_hotVideo:
+
                     getFragment(HotVideoFragment.newInstance(Links.GET_HOT_VIDEO));
                     toolbar.setTitle(R.string.title_hotVideo);
                     return true;
@@ -133,9 +142,13 @@ public class MainActivity extends AppCompatActivity
     };
     public void getFragment(Fragment fragment){
         try {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container,fragment)
-                    .commit();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.container,fragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.container,fragment)
+//                    .commit();
             progressBar.setVisibility(View.GONE);
         }catch (Exception e){
             e.printStackTrace();

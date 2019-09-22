@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,13 +51,29 @@ public class VideoNear_Adapter extends RecyclerView.Adapter<VideoNear_Adapter.Vi
         holder.img_Avatar_Video_Near.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iSetOnnVideoItemClick.onItemSelect(videosList, position);
+                try {
+                    if(InternetConnection.ConnectionForInternet(context)){
+                        iSetOnnVideoItemClick.onItemSelect(videosList, position);
+                    }else {
+                        return;
+                    }
+                }catch (Exception ex){
+                    Toast.makeText(context,R.string.error, Toast.LENGTH_SHORT).show();
+                }
             }
         });
         holder.tv_Title_Video_Near.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iSetOnnVideoItemClick.onItemSelect(videosList, position);
+                try {
+                    if(InternetConnection.ConnectionForInternet(context)){
+                        iSetOnnVideoItemClick.onItemSelect(videosList, position);
+                    }else {
+                        return;
+                    }
+                }catch (Exception ex){
+                    Toast.makeText(context,R.string.error, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

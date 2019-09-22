@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,13 +65,32 @@ public class HotVideo_Adapter extends RecyclerView.Adapter<HotVideo_Adapter.View
         holder.img_Avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iSetOnnVideoItemClick.onItemSelect(videosList, position);
+                try{
+                    if(InternetConnection.ConnectionForInternet(context)){
+                        iSetOnnVideoItemClick.onItemSelect(videosList, position);
+                    }else {
+                        return;
+                    }
+                }
+                catch (Exception ex){
+                    Toast.makeText(context,"Error",Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
         holder.tv_Title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                iSetOnnVideoItemClick.onItemSelect(videosList, position);
+                try{
+                    if(InternetConnection.ConnectionForInternet(context)){
+                        iSetOnnVideoItemClick.onItemSelect(videosList, position);
+                    }else {
+                        return;
+                    }
+                }
+                catch (Exception ex){
+                    Toast.makeText(context,"Error",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

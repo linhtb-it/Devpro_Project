@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -50,7 +51,18 @@ public class Category_Adapter extends RecyclerView.Adapter<Category_Adapter.View
         holder.img_Avatar_Category.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                i__onVideoItemClick.onItemSelect(categoryList.get(position), Links.GET_ITEM_CATEGORY);
+                try{
+                    if(InternetConnection.ConnectionForInternet(context)){
+                        i__onVideoItemClick.onItemSelect(categoryList.get(position), Links.GET_ITEM_CATEGORY);
+                    }else {
+                        //Toast.makeText(context,R.string.error,Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                }catch (Exception ex){
+                    Toast.makeText(context,R.string.error,Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }

@@ -115,7 +115,6 @@ public class VideoPlayerFragment extends Fragment {
         });
 
         vv_Video.setOnTouchListener(new View.OnTouchListener() {
-
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if (motionEvent.getAction() ==MotionEvent.ACTION_MOVE){
@@ -125,12 +124,10 @@ public class VideoPlayerFragment extends Fragment {
                     else {
                         i--;
                     }
-                    tv_Title_PlayVideo.setText("Start Hover"+ i);
                 }
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
                     //showControl();
                     xTouch = motionEvent.getX();
-                    tv_Title_PlayVideo.setText("Finish"+ motionEvent.getX());
                     i=0 ;
                 }if (motionEvent.getAction() == MotionEvent.ACTION_UP){
                     if (i>5){
@@ -139,17 +136,13 @@ public class VideoPlayerFragment extends Fragment {
                         }else {
                             vv_Video.seekTo( vv_Video.getDuration() - 1000);
                         }
-
                     }else if(i<-5){
                         if(vv_Video.getCurrentPosition() <= 10000){
                             vv_Video.seekTo(100);
                         }else {
                             vv_Video.seekTo(vv_Video.getCurrentPosition() - 10000);
                         }
-
                     }
-
-                    tv_Title_PlayVideo.setText("Stop touch"+ vv_Video.getWidth()+"--"+vv_Video.getHeight());
                 }
                 return false;
             }
@@ -192,6 +185,32 @@ public class VideoPlayerFragment extends Fragment {
         return view;
 
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     private void hideControl(){
         imgBut_Next.setVisibility(View.GONE);
         imgBut_Back.setVisibility(View.GONE);
