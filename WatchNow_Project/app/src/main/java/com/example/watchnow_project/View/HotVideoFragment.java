@@ -118,8 +118,8 @@ public class HotVideoFragment extends Fragment{
 
         adapter.setOnVideoItemClick(new ISetOnVideoItemClick() {
             @Override
-            public void onItemSelect(ArrayList<Video> videos, int position) {
-                listener.sendVideo(videos,position);
+            public void onItemSelect(ArrayList<Video> videos, int position, int oldDuration) {
+                listener.sendVideo(videos,position,oldDuration);
             }
         });
         rv_Video.setLayoutManager(layoutManager);

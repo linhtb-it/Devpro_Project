@@ -67,7 +67,7 @@ public class HotVideo_Adapter extends RecyclerView.Adapter<HotVideo_Adapter.View
             public void onClick(View view) {
                 try{
                     if(InternetConnection.ConnectionForInternet(context)){
-                        iSetOnnVideoItemClick.onItemSelect(videosList, position);
+                        iSetOnnVideoItemClick.onItemSelect(videosList, position,0);
                     }else {
                         return;
                     }
@@ -82,7 +82,7 @@ public class HotVideo_Adapter extends RecyclerView.Adapter<HotVideo_Adapter.View
             public void onClick(View view) {
                 try{
                     if(InternetConnection.ConnectionForInternet(context)){
-                        iSetOnnVideoItemClick.onItemSelect(videosList, position);
+                        iSetOnnVideoItemClick.onItemSelect(videosList, position,0);
                     }else {
                         return;
                     }

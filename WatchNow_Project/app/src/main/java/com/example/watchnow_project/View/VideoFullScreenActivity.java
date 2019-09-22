@@ -4,27 +4,17 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-
 import android.os.Handler;
-import android.view.LayoutInflater;
-
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.VideoView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.bumptech.glide.Glide;
-import com.example.watchnow_project.Adapter.VideoNear_Adapter;
+import androidx.appcompat.app.AppCompatActivity;
 import com.example.watchnow_project.Model.Entity.Video;
 import com.example.watchnow_project.R;
 
@@ -32,57 +22,44 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class VideoPlayerFragment extends Fragment {
-
-    VideoView vv_Video;
-    ImageView img_Avatar_PlayVideo;
-    ImageView imgBut_Play, imgBut_Pause, imgBut_Back, imgBut_Next;
-    TextView tv_Title_PlayVideo, tv_TimePlay, tv_TimeMax;
+public class VideoFullScreenActivity extends AppCompatActivity {
     SeekBar seekBar;
-    boolean statusControl, videoNext =  true;
+    VideoView vv_Video;
+    ImageView imgBut_Play, imgBut_Pause, imgBut_Back, imgBut_Next, imgBut_full;
+    TextView tv_Title_PlayVideo, tv_TimePlay, tv_TimeMax;
     ProgressBar progressBar;
-    RecyclerView rv_Video_Near;
-    ImageView imgFullScreen;
-
-    ArrayList<Video> videos;
-
     SimpleDateFormat formatTime = new SimpleDateFormat("mm:ss");
-    int i = 0;
-    float xTouch, yTouch;
-
+    ArrayList<Video> videos;
+    float xTouch = 0;
+    int i=0;
     int position, oldDuration;
-    public void getVideo(ArrayList videos, int position,int oldDuration){
+    boolean statusControl, videoNext =  true;
+
+    public void setVideos(ArrayList<Video> videos, int position,int oldDuration) {
         this.videos = videos;
         this.position = position;
         this.oldDuration = oldDuration;
     }
-    public static VideoPlayerFragment newInstance() {
-        
-        Bundle args = new Bundle();
 
-        VideoPlayerFragment fragment = new VideoPlayerFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.video_player_fragment,container,false);
-        vv_Video = view.findViewById(R.id.vv_Video);
-        img_Avatar_PlayVideo = view.findViewById(R.id.img_Avatar_PlayVideo);
-        tv_Title_PlayVideo = view.findViewById(R.id.tv_Title_Video_Play);
-        rv_Video_Near = view.findViewById(R.id.rv_Video_Near);
-        imgBut_Play = view.findViewById(R.id.play_ctr);
-        imgBut_Pause = view.findViewById(R.id.pause_ctr);
-        imgBut_Back = view.findViewById(R.id.back_ctr);
-        imgBut_Next = view.findViewById(R.id.next_ctr);
-        seekBar = view.findViewById(R.id.seek_Video);
-        tv_TimePlay = view.findViewById(R.id.tv_TimePlay);
-        tv_TimeMax = view.findViewById(R.id.tv_TimeMax);
-        imgFullScreen = view.findViewById(R.id.img_FullScreen);
-        progressBar = view.findViewById(R.id.progres_loadVideo);
-        progressBar.setVisibility(View.VISIBLE);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.video_player_full_screen);
+
+        seekBar = findViewById(R.id.seek_Video_full);
+        imgBut_Back = findViewById(R.id.back_ctr_full);
+        imgBut_Next = findViewById(R.id.next_ctr_full);
+        imgBut_Pause = findViewById(R.id.pause_ctr);
+        imgBut_Play = findViewById(R.id.play_ctr_full);
+        tv_TimeMax = findViewById(R.id.tv_TimeMax_full);
+        tv_TimePlay = findViewById(R.id.tv_TimePlay_full);
+        vv_Video = findViewById(R.id.vv_Video_full);
+        imgBut_full = findViewById(R.id.img_FullScreen_full);
+        progressBar = findViewById(R.id.progres_loadVideo_full);
+        //tv_Title_PlayVideo = findViewById(R.id.tv_Title_Video_Play);
+
         hideControl();
+
 
         imgBut_Play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,6 +89,23 @@ public class VideoPlayerFragment extends Fragment {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
                 progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                setTv_TimePlay(formatTime.format(seekBar.getProgress()));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                setTv_TimePlay(formatTime.format(seekBar.getProgress()));
+                vv_Video.seekTo(seekBar.getProgress());
             }
         });
 
@@ -148,6 +142,7 @@ public class VideoPlayerFragment extends Fragment {
                 return false;
             }
         });
+
         vv_Video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,53 +160,9 @@ public class VideoPlayerFragment extends Fragment {
                 }
             }
         });
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                setTv_TimePlay(formatTime.format(seekBar.getProgress()));
-            }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                setTv_TimePlay(formatTime.format(seekBar.getProgress()));
-                vv_Video.seekTo(seekBar.getProgress());
-            }
-        });
-
-        PlayVideo(videos, position,oldDuration);
-        return view;
-
+        PlayVideo(videos, position, oldDuration);
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
-
     private void hideControl(){
         imgBut_Next.setVisibility(View.GONE);
         imgBut_Back.setVisibility(View.GONE);
@@ -220,7 +171,7 @@ public class VideoPlayerFragment extends Fragment {
         tv_TimePlay.setVisibility(View.GONE);
         tv_TimeMax.setVisibility(View.GONE);
         seekBar.setVisibility(View.GONE);
-        imgFullScreen.setVisibility(View.GONE);
+        imgBut_full.setVisibility(View.GONE);
         statusControl = false;
     }
     private void showControl(){
@@ -229,7 +180,7 @@ public class VideoPlayerFragment extends Fragment {
         seekBar.setVisibility(View.VISIBLE);
         tv_TimePlay.setVisibility(View.VISIBLE);
         tv_TimeMax.setVisibility(View.VISIBLE);
-        imgFullScreen.setVisibility(View.VISIBLE);
+        imgBut_full.setVisibility(View.VISIBLE);
 
         if(vv_Video.isPlaying()){
             imgBut_Pause.setVisibility(View.VISIBLE);
@@ -266,11 +217,11 @@ public class VideoPlayerFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         if(position<videos.size()){
             position++;
-            PlayVideo(this.videos, position,oldDuration);
+            PlayVideo(this.videos, position,0);
         }
         else {
             position = 0;
-            PlayVideo(this.videos, position,oldDuration);
+            PlayVideo(this.videos, position,0);
         }
     }
     // back control click event - run video before on List
@@ -278,15 +229,13 @@ public class VideoPlayerFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         if(position>0){
             position--;
-            PlayVideo(this.videos, position,oldDuration);
+            PlayVideo(this.videos, position,0);
         }
         else {
             position = videos.size()-1;
-            PlayVideo(this.videos, position,oldDuration);
+            PlayVideo(this.videos, position,0);
         }
     }
-
-    // set time to textView Right of seekBar - length of video
     private void setTv_TimeMax(){
         seekBar.setMax(vv_Video.getDuration());
     }
@@ -327,33 +276,32 @@ public class VideoPlayerFragment extends Fragment {
         retriever.release();
         return  Float.parseFloat(time);
     }
-    private void setVideoToList(ArrayList<Video> videos, int position){
-
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
-        VideoNear_Adapter adapter = new VideoNear_Adapter(getContext(),videos);
-
-        rv_Video_Near.setLayoutManager(layoutManager);
-        rv_Video_Near.setAdapter(adapter);
-
-        adapter.setOnVideoItemClick((videos1, position1,oldDuration) -> PlayVideo(videos1, position1,oldDuration));
-    }
+//    private void setVideoToList(ArrayList<Video> videos, int position){
+//
+//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false);
+//        VideoNear_Adapter adapter = new VideoNear_Adapter(getContext(),videos);
+//
+//        rv_Video_Near.setLayoutManager(layoutManager);
+//        rv_Video_Near.setAdapter(adapter);
+//
+//        adapter.setOnVideoItemClick((videos1, position1) -> PlayVideo(videos1, position1));
+//    }
     private void PlayVideo(ArrayList<Video> videos, int position, int oldDuration){
         tv_Title_PlayVideo.setText(this.videos.get(position).getTitle());
-        try{
-            Glide.with(getContext()).load(videos.get(position).getAvatar()).into(img_Avatar_PlayVideo);
-
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
+//        try{
+//            Glide.with(getContext()).load(videos.get(position).getAvatar()).into(img_Avatar_PlayVideo);
+//
+//        }catch (Exception ex){
+//            ex.printStackTrace();
+//        }
         Uri uri = Uri.parse(videos.get(position).getFile_Mp4());
         vv_Video.setVideoURI(uri);
-        setVideoToList(this.videos, position);
+//        setVideoToList(this.videos, position);
         vv_Video.start();
         float timeMax = getDurationVideo(videos.get(position));
         tv_TimeMax.setText(formatTime.format(timeMax));
         seekBar.setMax((int)timeMax);
         vv_Video.seekTo(oldDuration);
         videoUpdate();
-
     }
 }

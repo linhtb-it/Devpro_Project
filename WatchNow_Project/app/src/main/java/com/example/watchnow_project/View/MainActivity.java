@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
 
         fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         progressBar = findViewById(R.id.progres);
         toggle = new ActionBarDrawerToggle(
@@ -160,10 +160,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void sendVideo(ArrayList<Video> videos,int position) {
+    public void sendVideo(ArrayList<Video> videos,int position, int oldDuration) {
         videoPlayer = VideoPlayerFragment.newInstance();
         if(hotVideoFragMent !=null || hotVideoFragMent.isInLayout()){
-            videoPlayer.getVideo(videos,position);
+            videoPlayer.getVideo(videos,position,oldDuration);
         }
         getFragment(videoPlayer);
 
