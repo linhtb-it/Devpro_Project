@@ -1,6 +1,8 @@
 package com.example.watchnow_project.Model.Entity;
 
-public class Video {
+import java.io.Serializable;
+
+public class Video implements Serializable {
     private String id;
     private String provider_ID;
     private String category_ID;

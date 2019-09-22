@@ -1,5 +1,6 @@
 package com.example.watchnow_project.View;
 
+import android.content.Context;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -25,8 +26,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.watchnow_project.Adapter.VideoNear_Adapter;
+import com.example.watchnow_project.Event.ISetOnVideoItemClick;
 import com.example.watchnow_project.Model.Entity.Video;
 import com.example.watchnow_project.R;
+import com.example.watchnow_project.TransData.IVideoFullScreen;
+import com.example.watchnow_project.TransData.IVideoTrans;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +48,7 @@ public class VideoPlayerFragment extends Fragment {
     RecyclerView rv_Video_Near;
     ImageView imgFullScreen;
 
+    IVideoFullScreen listener;
     ArrayList<Video> videos;
 
     SimpleDateFormat formatTime = new SimpleDateFormat("mm:ss");
@@ -63,6 +68,15 @@ public class VideoPlayerFragment extends Fragment {
         VideoPlayerFragment fragment = new VideoPlayerFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+    public void onAttach(Context context){
+        super.onAttach(context);
+        if(context instanceof MainActivity){
+            this.listener = (IVideoFullScreen) context;
+        }
+        else {
+            throw new RuntimeException(context.toString()+"interface chua hoat dong");
+        }
     }
     @Nullable
     @Override
@@ -148,6 +162,13 @@ public class VideoPlayerFragment extends Fragment {
                 return false;
             }
         });
+        imgFullScreen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                vv_Video.pause();
+                listener.sendVideoFull(videos,position,vv_Video.getCurrentPosition());
+            }
+        });
         vv_Video.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -196,7 +217,6 @@ public class VideoPlayerFragment extends Fragment {
     public void onResume() {
         super.onResume();
     }
-
     @Override
     public void onPause() {
         super.onPause();

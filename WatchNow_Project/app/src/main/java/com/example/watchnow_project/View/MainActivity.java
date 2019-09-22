@@ -1,5 +1,6 @@
 package com.example.watchnow_project.View;
 
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import com.example.watchnow_project.Model.Entity.Category;
 import com.example.watchnow_project.Model.Entity.Video;
 import com.example.watchnow_project.R;
 import com.example.watchnow_project.TransData.ICategoryTrans;
+import com.example.watchnow_project.TransData.IVideoFullScreen;
 import com.example.watchnow_project.TransData.IVideoTrans;
 import com.example.watchnow_project.View.CategoryFragment;
 import com.example.watchnow_project.View.HotVideoFragment;
@@ -41,7 +43,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, IVideoTrans, ICategoryTrans {
+        implements NavigationView.OnNavigationItemSelectedListener, IVideoTrans, ICategoryTrans, IVideoFullScreen {
 
     private static final String TAG = "MainActivity";
     Fragment hotVideoFragMent;
@@ -184,5 +186,25 @@ public class MainActivity extends AppCompatActivity
         this.toolbar.setTitle(category.getTitle());
         hotVideoFragMent = HotVideoFragment.newInstance(linkCategory);
         getFragment(hotVideoFragMent);
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    @Override
+    public void sendVideoFull(ArrayList<Video> videos, int position, int oldDuration) {
+        Intent intent = new Intent(this,VideoFullScreenActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putInt("position",position);
+        bundle.putInt("oldDuration",oldDuration);
+        bundle.putInt("size",videos.size());
+        for(int i=0; i<videos.size(); i++){
+            bundle.putSerializable("video"+i,videos.get(i));
+        }
+//        bundle.putSerializable("video",videos.get(position));
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 }

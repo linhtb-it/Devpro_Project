@@ -1,5 +1,6 @@
 package com.example.watchnow_project.View;
 
+import android.content.Intent;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -49,17 +50,25 @@ public class VideoFullScreenActivity extends AppCompatActivity {
         seekBar = findViewById(R.id.seek_Video_full);
         imgBut_Back = findViewById(R.id.back_ctr_full);
         imgBut_Next = findViewById(R.id.next_ctr_full);
-        imgBut_Pause = findViewById(R.id.pause_ctr);
+        imgBut_Pause = findViewById(R.id.pause_ctr_full);
         imgBut_Play = findViewById(R.id.play_ctr_full);
         tv_TimeMax = findViewById(R.id.tv_TimeMax_full);
         tv_TimePlay = findViewById(R.id.tv_TimePlay_full);
         vv_Video = findViewById(R.id.vv_Video_full);
         imgBut_full = findViewById(R.id.img_FullScreen_full);
         progressBar = findViewById(R.id.progres_loadVideo_full);
-        //tv_Title_PlayVideo = findViewById(R.id.tv_Title_Video_Play);
-
+        videos = new ArrayList<>();
+        Intent getIntent = getIntent();
+        Bundle bundle = getIntent.getExtras();
+        this.position = bundle.getInt("position");
+        this.oldDuration = bundle.getInt("oldDuration");
+        int size = bundle.getInt("size");
+        videos = new ArrayList<>();
+        for(int i=0; i< size; i++){
+            Video video = (Video)bundle.getSerializable("video"+i);
+            videos.add(video);
+        }
         hideControl();
-
 
         imgBut_Play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,7 +296,7 @@ public class VideoFullScreenActivity extends AppCompatActivity {
 //        adapter.setOnVideoItemClick((videos1, position1) -> PlayVideo(videos1, position1));
 //    }
     private void PlayVideo(ArrayList<Video> videos, int position, int oldDuration){
-        tv_Title_PlayVideo.setText(this.videos.get(position).getTitle());
+        //tv_Title_PlayVideo.setText(this.videos.get(position).getTitle());
 //        try{
 //            Glide.with(getContext()).load(videos.get(position).getAvatar()).into(img_Avatar_PlayVideo);
 //
@@ -301,7 +310,7 @@ public class VideoFullScreenActivity extends AppCompatActivity {
         float timeMax = getDurationVideo(videos.get(position));
         tv_TimeMax.setText(formatTime.format(timeMax));
         seekBar.setMax((int)timeMax);
-        vv_Video.seekTo(oldDuration);
+        vv_Video.seekTo(oldDuration-1);
         videoUpdate();
     }
 }
