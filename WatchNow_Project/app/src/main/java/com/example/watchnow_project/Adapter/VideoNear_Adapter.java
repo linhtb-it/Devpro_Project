@@ -53,7 +53,7 @@ public class VideoNear_Adapter extends RecyclerView.Adapter<VideoNear_Adapter.Vi
             public void onClick(View view) {
                 try {
                     if(InternetConnection.ConnectionForInternet(context)){
-                        iSetOnnVideoItemClick.onItemSelect(videosList, position,0);
+                        iSetOnnVideoItemClick.onItemSelect(videosList, position);
                     }else {
                         return;
                     }
@@ -67,7 +67,7 @@ public class VideoNear_Adapter extends RecyclerView.Adapter<VideoNear_Adapter.Vi
             public void onClick(View view) {
                 try {
                     if(InternetConnection.ConnectionForInternet(context)){
-                        iSetOnnVideoItemClick.onItemSelect(videosList, position,0);
+                        iSetOnnVideoItemClick.onItemSelect(videosList, position);
                     }else {
                         return;
                     }

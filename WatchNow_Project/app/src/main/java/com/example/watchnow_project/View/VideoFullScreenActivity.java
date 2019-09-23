@@ -70,6 +70,12 @@ public class VideoFullScreenActivity extends AppCompatActivity {
         }
         hideControl();
 
+        imgBut_full.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
         imgBut_Play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

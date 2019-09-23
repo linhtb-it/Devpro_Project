@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity
         try {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.add(R.id.container,fragment);
-            fragmentTransaction.addToBackStack(null);
+            //fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 //            getSupportFragmentManager().beginTransaction()
 //                    .replace(R.id.container,fragment)
@@ -162,10 +162,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void sendVideo(ArrayList<Video> videos,int position, int oldDuration) {
-        videoPlayer = VideoPlayerFragment.newInstance();
+    public void sendVideo(ArrayList<Video> videos,int position) {
+        videoPlayer = new VideoPlayerFragment();
         if(hotVideoFragMent !=null || hotVideoFragMent.isInLayout()){
-            videoPlayer.getVideo(videos,position,oldDuration);
+            videoPlayer.getVideo(videos,position);
         }
         getFragment(videoPlayer);
 

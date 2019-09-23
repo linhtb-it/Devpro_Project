@@ -36,7 +36,9 @@ public class HotVideoFragment extends Fragment{
     RecyclerView rv_Video;
     String linkLoadVideo;
     ProgressBar progressBar;
-
+    public void setListener(IVideoTrans listener){
+        this.listener = listener;
+    }
     public void setLinkLoadVideo(String linkLoadVideo) {
         this.linkLoadVideo = linkLoadVideo;
     }
@@ -118,8 +120,8 @@ public class HotVideoFragment extends Fragment{
 
         adapter.setOnVideoItemClick(new ISetOnVideoItemClick() {
             @Override
-            public void onItemSelect(ArrayList<Video> videos, int position, int oldDuration) {
-                listener.sendVideo(videos,position,oldDuration);
+            public void onItemSelect(ArrayList<Video> videos, int position) {
+                listener.sendVideo(videos,position);
             }
         });
         rv_Video.setLayoutManager(layoutManager);
@@ -138,6 +140,8 @@ public class HotVideoFragment extends Fragment{
 
         @Override
         protected String doInBackground(Void... voids) {
+            Log.e("demo","doInBackground ");
+
             try {
                 URL url = new URL(this.url);
                 URLConnection connection = url.openConnection();
@@ -157,11 +161,14 @@ public class HotVideoFragment extends Fragment{
 
         @Override
         protected void onPreExecute() {
+            Log.e("demo","onPreeeExcute ");
             super.onPreExecute();
         }
 
         @Override
         protected void onPostExecute(String s) {
+            Log.e("demo","onPostExecute ");
+
             super.onPostExecute(s);
             progressBar.setVisibility(View.GONE);
             try {
@@ -218,6 +225,7 @@ public class HotVideoFragment extends Fragment{
             } catch (Exception json_ex) {
                 json_ex.printStackTrace();
             } finally {
+
             }
         }
     }

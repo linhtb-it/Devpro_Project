@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.watchnow_project.Adapter.InternetConnection;
 import com.example.watchnow_project.Adapter.VideoNear_Adapter;
 import com.example.watchnow_project.Event.ISetOnVideoItemClick;
 import com.example.watchnow_project.Model.Entity.Video;
@@ -56,10 +58,9 @@ public class VideoPlayerFragment extends Fragment {
     float xTouch, yTouch;
 
     int position, oldDuration;
-    public void getVideo(ArrayList videos, int position,int oldDuration){
+    public void getVideo(ArrayList videos, int position){
         this.videos = videos;
         this.position = position;
-        this.oldDuration = oldDuration;
     }
     public static VideoPlayerFragment newInstance() {
         
@@ -69,6 +70,10 @@ public class VideoPlayerFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    public VideoPlayerFragment() {
+    }
+
     public void onAttach(Context context){
         super.onAttach(context);
         if(context instanceof MainActivity){
@@ -97,6 +102,7 @@ public class VideoPlayerFragment extends Fragment {
         progressBar = view.findViewById(R.id.progres_loadVideo);
         progressBar.setVisibility(View.VISIBLE);
         hideControl();
+
 
         imgBut_Play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,8 +208,6 @@ public class VideoPlayerFragment extends Fragment {
                 vv_Video.seekTo(seekBar.getProgress());
             }
         });
-
-        PlayVideo(videos, position,oldDuration);
         return view;
 
     }
@@ -211,11 +215,13 @@ public class VideoPlayerFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        PlayVideo(videos, position);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        vv_Video.start();
     }
     @Override
     public void onPause() {
@@ -286,11 +292,11 @@ public class VideoPlayerFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         if(position<videos.size()){
             position++;
-            PlayVideo(this.videos, position,oldDuration);
+            PlayVideo(this.videos, position);
         }
         else {
             position = 0;
-            PlayVideo(this.videos, position,oldDuration);
+            PlayVideo(this.videos, position);
         }
     }
     // back control click event - run video before on List
@@ -298,11 +304,11 @@ public class VideoPlayerFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
         if(position>0){
             position--;
-            PlayVideo(this.videos, position,oldDuration);
+            PlayVideo(this.videos, position);
         }
         else {
             position = videos.size()-1;
-            PlayVideo(this.videos, position,oldDuration);
+            PlayVideo(this.videos, position);
         }
     }
 
@@ -355,9 +361,9 @@ public class VideoPlayerFragment extends Fragment {
         rv_Video_Near.setLayoutManager(layoutManager);
         rv_Video_Near.setAdapter(adapter);
 
-        adapter.setOnVideoItemClick((videos1, position1,oldDuration) -> PlayVideo(videos1, position1,oldDuration));
+        adapter.setOnVideoItemClick((videos1, position1) -> PlayVideo(videos1, position1));
     }
-    private void PlayVideo(ArrayList<Video> videos, int position, int oldDuration){
+    private void PlayVideo(ArrayList<Video> videos, int position){
         tv_Title_PlayVideo.setText(this.videos.get(position).getTitle());
         try{
             Glide.with(getContext()).load(videos.get(position).getAvatar()).into(img_Avatar_PlayVideo);
@@ -365,15 +371,20 @@ public class VideoPlayerFragment extends Fragment {
         }catch (Exception ex){
             ex.printStackTrace();
         }
-        Uri uri = Uri.parse(videos.get(position).getFile_Mp4());
-        vv_Video.setVideoURI(uri);
-        setVideoToList(this.videos, position);
-        vv_Video.start();
-        float timeMax = getDurationVideo(videos.get(position));
-        tv_TimeMax.setText(formatTime.format(timeMax));
-        seekBar.setMax((int)timeMax);
-        vv_Video.seekTo(oldDuration);
-        videoUpdate();
+        try{
+            Uri uri = Uri.parse(videos.get(position).getFile_Mp4());
+            vv_Video.setVideoURI(uri);
+            setVideoToList(this.videos, position);
+            vv_Video.start();
+            float timeMax = getDurationVideo(videos.get(position));
+            tv_TimeMax.setText(formatTime.format(timeMax));
+            seekBar.setMax((int)timeMax);
+            // vv_Video.seekTo(oldDuration);
+            videoUpdate();
+        }catch (Exception ex){
+            Toast.makeText(getContext(),"Đường truyền không ổn định",Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 }
