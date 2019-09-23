@@ -171,7 +171,7 @@ public class VideoFullScreenActivity extends AppCompatActivity {
                         public void run() {
                             hideControl();
                         }
-                    },1500);
+                    },2500);
                 }
             }
         });

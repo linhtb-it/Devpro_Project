@@ -188,7 +188,7 @@ public class VideoPlayerFragment extends Fragment {
                         public void run() {
                             hideControl();
                         }
-                    },1500);
+                    },2500);
                 }
             }
         });
